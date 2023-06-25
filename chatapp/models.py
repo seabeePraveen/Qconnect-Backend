@@ -3,8 +3,8 @@ from django.contrib.auth.models import AbstractBaseUser
 from .manage import CustomUserManager
 
 class CustomUser(AbstractBaseUser):
-    phone_number=models.CharField(max_length=10)
-    user_profile_image=models.ImageField(upload_to="profile")
+    phone_number=models.CharField(max_length=10,null=True,blank=True)
+    user_profile_image=models.ImageField(upload_to="profile",null=True)
     email=models.EmailField(unique=True)
     name = models.CharField(max_length=100,null=True,blank=True)
     objects = CustomUserManager()

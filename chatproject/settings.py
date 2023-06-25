@@ -27,6 +27,7 @@ SECRET_KEY = "django-insecure-u37y02a0&35z#_h@^-tg3h-7!+tg^wzuq3g#y%ah8*pkd%5a9a
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+
 AUTH_USER_MODEL='chatapp.CustomUser'
 
 
@@ -55,6 +56,17 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = "chatproject.urls"
+
+REST_FRAMEWORK = {
+    "NON_FIELD_ERRORS_KEY":"errors",
+    "DEFAULT_AUTHENTICATION_CLASSES":(
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.TokenAuthentication",
+    ),
+    "DEFAULT_PERMISSION_CLASSES":(
+        "rest_framework.permissions.IsAuthenticated"
+    ),
+}
 
 TEMPLATES = [
     {
@@ -102,6 +114,11 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
     },
+]
+
+AUTHENTICATION_BACKENDS = [
+    'chatapp.authenticate.CustomUserBackend',
+    
 ]
 
 

@@ -6,6 +6,7 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from rest_framework import generics,status
 from rest_framework.request import Request
+from django.contrib.auth import authenticate
 # Create your views here.
 
 def home(request):
@@ -36,3 +37,30 @@ class CustomUserCreateView(generics.CreateAPIView):
         }
         
         return Response(data=response,status=status.HTTP_400_BAD_REQUEST)
+class LoginView(APIView):
+    def post(self,request:Request):
+        userid = request.data.get('userid')
+        password = request.data.get('password')
+        email = request.data.get('email')
+
+        user = authenticate(request=None,userid=userid,password=password)
+        if user is not None:
+            response = {
+                "message":"Login Succesfully",
+                "token":user.auth_token.key
+            }
+            return Response(data=response,status=status.HTTP_200_OK)
+        else:
+            response = {
+                "message":"In Valid User Id or Password",
+            }
+            return Response(data=response,status=status.HTTP_404_NOT_FOUND)
+
+    
+    def get(self,request:Request):
+        content = {
+            "user":str(request.user),
+            "auth":str(request.auth)
+        }
+
+        return Response(data=content,status=status.HTTP_200_OK)

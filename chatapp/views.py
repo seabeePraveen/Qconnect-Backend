@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework.views import APIView
+from rest_framework.decorators import api_view
 from .serializers import *
 from .models import *
 from rest_framework.response import Response
@@ -64,3 +65,18 @@ class LoginView(APIView):
         }
 
         return Response(data=content,status=status.HTTP_200_OK)
+
+@api_view(['POST'])
+def get_user_details_by_token(request):
+    token_key = request.data.get('token')
+
+    try:
+        token = Token.objects.get(key=token_key)
+        user = token.user
+        userid = user.userid
+        email = user.email
+        phone_number = user.phone_number
+        name = user.name
+        return Response({'userid': userid, 'email': email,'phone_number':phone_number,'name':name})
+    except Token.DoesNotExist:
+        return Response({'error': 'Invalid token'}, status=400)

@@ -25,13 +25,14 @@ SECRET_KEY = "django-insecure-u37y02a0&35z#_h@^-tg3h-7!+tg^wzuq3g#y%ah8*pkd%5a9a
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
     "rest_framework",
+    "rest_framework.authtoken",
     "chatapp.apps.ChatappConfig",
     "django.contrib.admin",
     "django.contrib.auth",

@@ -26,6 +26,7 @@ SECRET_KEY = "django-insecure-u37y02a0&35z#_h@^-tg3h-7!+tg^wzuq3g#y%ah8*pkd%5a9a
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+AUTH_USER_MODEL='chatapp.CustomUser'
 
 
 # Application definition

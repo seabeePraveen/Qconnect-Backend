@@ -11,7 +11,7 @@ class CustomUser(AbstractBaseUser):
     userid = models.CharField(max_length=100,unique=True)
 
     USERNAME_FIELD='userid'
-    REQUIRED_FIELDS=['email','username']
+    REQUIRED_FIELDS=['email']
 
 
 

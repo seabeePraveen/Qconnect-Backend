@@ -6,6 +6,7 @@ class CustomUser(AbstractBaseUser):
     phone_number=models.CharField(max_length=10)
     user_profile_image=models.ImageField(upload_to="profile")
     email=models.EmailField(unique=True)
+    name = models.CharField(max_length=100)
 
     USERNAME_FIELD='username'
     REQUIRED_FIELDS=['email']

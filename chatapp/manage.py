@@ -4,7 +4,7 @@ from django.contrib.auth.base_user import BaseUserManager
 class UserManager(BaseUserManager):
     def create_user(self,username,password=None,**extra_fields):
         if not username:
-            raise ValueError("User anme Required")
+            raise ValueError("User name Required")
         
         extra_fields['email']=self.normalize_email(extra_fields['email'])
         user=self.model(username=username,**extra_fields)

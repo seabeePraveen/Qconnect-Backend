@@ -9,6 +9,10 @@ class CustomUser(AbstractBaseUser):
     name = models.CharField(max_length=100,null=True,blank=True)
     objects = CustomUserManager()
     userid = models.CharField(max_length=100,unique=True)
+    is_active = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
+
 
     USERNAME_FIELD='userid'
     REQUIRED_FIELDS=['email']

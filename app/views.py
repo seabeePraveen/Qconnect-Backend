@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from .serializers import SignUpSerializer
+from .serializers import SignUpSerializer,UserSerializer
 from rest_framework import generics,status
 from rest_framework.response import Response
 from rest_framework.request import Request
@@ -7,6 +7,16 @@ import io
 from .models import User
 from rest_framework.parsers import JSONParser
 # Create your views here.
+from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from django.views import View
+from django.http import JsonResponse
+
+
+
+def home(request):
+    return render(request,"update.html")
 
 class SignUpView(generics.GenericAPIView):
     serializer_class = SignUpSerializer
@@ -49,3 +59,10 @@ class SignUpView(generics.GenericAPIView):
             }
             return Response(data=response,status=status.HTTP_400_BAD_REQUEST)
 
+class UserUpdateView(APIView):
+    def post(self, request):
+        serializer = UserSerializer(request.user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({'message': 'User information updated successfully'})
+        return Response(serializer.errors, status=400)

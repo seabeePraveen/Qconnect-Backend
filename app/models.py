@@ -36,6 +36,7 @@ class User(AbstractUser):
     username = models.CharField(max_length=100,unique=True)
     email=models.EmailField(unique=True)
     name = models.CharField(max_length=100,null=True,blank=True)
+    phone_number=models.CharField(max_length=10,null=True,blank=True)
     objects = CustomUserManager()
     is_admin        = models.BooleanField(default=False)
     is_staff        = models.BooleanField(default=False)

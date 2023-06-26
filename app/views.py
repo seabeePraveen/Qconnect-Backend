@@ -12,6 +12,8 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from django.views import View
 from django.http import JsonResponse
+from rest_framework.authtoken.models import Token
+from django.contrib.auth import login
 
 
 
@@ -64,5 +66,18 @@ class UserUpdateView(APIView):
         serializer = UserSerializer(request.user, data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({'message': 'User information updated successfully'})
+            
+            # Manually log in the user
+            login(request, request.user)
+            
+            # Retrieve or create the user's authentication token
+            token, created = Token.objects.get_or_create(user=request.user)
+            
+            # Return the updated user information and the token
+            data = {
+                'user': serializer.data,
+                'token': token.key
+            }
+            return Response(data)
+        
         return Response(serializer.errors, status=400)

@@ -3,6 +3,8 @@ from .serializers import SignUpSerializer
 from rest_framework import generics,status
 from rest_framework.response import Response
 from rest_framework.request import Request
+import io
+from rest_framework.parsers import JSONParser
 # Create your views here.
 
 class SignUpView(generics.GenericAPIView):
@@ -10,10 +12,9 @@ class SignUpView(generics.GenericAPIView):
 
     def post(self,request:Request):
         data = request.data
-
         serializer = self.serializer_class(data=data)
 
-        if serializer.is_valid():
+        if serializer.is_valid(raise_exception=True):
             serializer.save()
 
             response = {

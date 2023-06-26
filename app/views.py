@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.request import Request
 import io
 from .models import User
-from rest_framework.parsers import JSONParser
+from rest_framework.authtoken.models import Token
 # Create your views here.
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
@@ -25,8 +25,6 @@ class SignUpView(generics.GenericAPIView):
         data = request.data
         username = data['username']
         email = data['email']
-        print(username)
-        print(email)
         username_exits = User.objects.filter(username=username).exists()
         if username_exits:
             response = {
@@ -45,11 +43,13 @@ class SignUpView(generics.GenericAPIView):
         serializer = self.serializer_class(data=data)
         try:
             serializer.is_valid(raise_exception=True)
-            serializer.save()
+            user =serializer.save()
+            token_obj,_ = Token.objects.get_or_create(user=user)
 
             response = {
                 "message":"User Created Succesfully",
-                "data":serializer.data
+                "data":serializer.data,
+                "token":token_obj.key
             }
 
             return Response(data=response,status=status.HTTP_200_OK)

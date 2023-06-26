@@ -5,7 +5,7 @@ from .manage import CustomUserManager
 class CustomUser(AbstractBaseUser):
     phone_number=models.CharField(max_length=10,null=True,blank=True)
     user_profile_image=models.ImageField(upload_to="profile",null=True,blank=True)
-    email=models.EmailField(unique=True)
+    email=models.EmailField(unique=False)
     name = models.CharField(max_length=100,null=True,blank=True)
     objects = CustomUserManager()
     userid = models.CharField(max_length=100,unique=True)
@@ -15,7 +15,7 @@ class CustomUser(AbstractBaseUser):
 
 
     USERNAME_FIELD='userid'
-    REQUIRED_FIELDS=['email']
+    REQUIRED_FIELDS=[]
 
 
     def has_module_perms(self, app_label):

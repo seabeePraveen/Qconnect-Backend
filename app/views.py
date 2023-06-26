@@ -14,11 +14,13 @@ from django.views import View
 from django.http import JsonResponse
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import login
+from django.contrib.auth import logout
+
 
 
 
 def home(request):
-    return render(request,"update.html")
+    return render(request,"delete.html")
 
 class SignUpView(generics.GenericAPIView):
     serializer_class = SignUpSerializer
@@ -81,3 +83,17 @@ class UserUpdateView(APIView):
             return Response(data)
         
         return Response(serializer.errors, status=400)
+    
+class UserDeleteView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request):
+        user = request.user
+
+        # Log out the user
+        logout(request)
+
+        # Delete the user
+        user.delete()
+
+        return Response({'message': 'User deleted successfully'})

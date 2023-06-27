@@ -12,4 +12,5 @@ urlpatterns = [
     path("update/",UserUpdateView.as_view(),name="update_user"),
     path("delete/",UserDeleteView.as_view(),name="delete_user"),
     path("get_user/",get_user_by_token.as_view(),name="get_user"),
+    path("get_user_with_string/",get_users_by_starting_string.as_view(),name='get_user_with_string'),
 ]

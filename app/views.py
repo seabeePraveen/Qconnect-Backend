@@ -158,3 +158,15 @@ class get_user_by_token(APIView):
                  'name':name},status=status.HTTP_200_OK)
         except Token.DoesNotExist:
             return Response({'error': 'Invalid token'}, status=400)
+
+
+class get_users_by_starting_string(generics.GenericAPIView):
+    def post(self,request):
+        data = request.data
+        string = data['username']
+        users = User.objects.filter(username__startswith=string)
+        users_serializer = UserSerializer(data=users,many=True)
+
+        if users_serializer.is_valid():
+            return Response(data={"message":"details getting"},status=status.HTTP_200_OK)
+        return Response(data={"mssg":"error"},status=status.HTTP_400_BAD_REQUEST)

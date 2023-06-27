@@ -20,7 +20,7 @@ from django.contrib.auth import logout
 
 
 def home(request):
-    return render(request,"update.html")
+    return render(request,"delete.html")
 
 class SignUpView(generics.GenericAPIView):
     serializer_class = SignUpSerializer
@@ -70,16 +70,12 @@ class UserUpdateView(APIView):
         token_old = data['token']
         token_obj = Token.objects.get(key=token_old)
         user = token_obj.user
-        print(user.email)
-        print(data['email'])
         if user.email!=data['email']:
             if User.objects.filter(email=data['email']).exists():
                 response = {
                     "email":"Email Already exits"
                 }
                 return Response(data=response,status=status.HTTP_400_BAD_REQUEST)
-        print(user.username)
-        print(data['username'])
         if user.username!=data['username']:
             if User.objects.filter(username=data['username']).exists():
                 response = {
@@ -107,7 +103,11 @@ class UserDeleteView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request):
-        user = request.user
+        data=request.data
+        token=data['token']
+        token_obj=Token.objects.get(key=token)
+        user=token_obj.user
+        
 
         # Log out the user
         logout(request)

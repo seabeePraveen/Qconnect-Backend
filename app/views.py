@@ -14,7 +14,7 @@ from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import login
 from django.contrib.auth import logout
-from django.http import HttpResponse
+
 
 
 
@@ -137,13 +137,6 @@ class get_user_by_token(APIView):
         except Token.DoesNotExist:
             return Response({'error': 'Invalid token'}, status=400)
         
-def get_message(request):
-    sender_id="pujitha"
-    receiver_id="arun1"
-    message=Message()
-    messages=message.get_messages(sender_id,receiver_id)
 
-    print(messages)
-    return HttpResponse("hello")
 
 

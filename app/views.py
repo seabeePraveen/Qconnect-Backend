@@ -1,10 +1,9 @@
+import io
 from django.shortcuts import render
 from .serializers import SignUpSerializer,UserSerializer
 from rest_framework import generics,status
 from rest_framework.request import Request
-import io
-from .models import User
-# Create your views here.
+from .models import User,Message
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
@@ -159,4 +158,3 @@ class get_user_by_token(APIView):
                  'name':name},status=status.HTTP_200_OK)
         except Token.DoesNotExist:
             return Response({'error': 'Invalid token'}, status=400)
-

@@ -112,6 +112,7 @@ class UserUpdateView(APIView):
 
             user.username = data['username']
             user.email = data['email']
+            user.name = data['name']
             user.save()
             user = User.objects.get(username=data['username'])
             token_obj,_ = Token.objects.get_or_create(user=user)
@@ -119,7 +120,7 @@ class UserUpdateView(APIView):
                 'user': serializer.data,
                 'token': token_obj.key,
             }
-            return Response(data,status=status.HTTP_200_OK)
+            return Response(data=data,status=status.HTTP_200_OK)
         
         return Response(serializer.errors, status=400)
     

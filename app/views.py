@@ -3,24 +3,24 @@ from .serializers import SignUpSerializer,UserSerializer
 from rest_framework import generics,status
 from rest_framework.response import Response
 from rest_framework.request import Request
+import json
 import io
-from .models import User
+from .models import User,Message
 from rest_framework.authtoken.models import Token
 # Create your views here.
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
-from django.views import View
-from django.http import JsonResponse
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import login
 from django.contrib.auth import logout
+from django.http import HttpResponse
 
 
 
 
 def home(request):
-    return render(request,"delete.html")
+    return render(request,"update.html")
 
 class SignUpView(generics.GenericAPIView):
     serializer_class = SignUpSerializer
@@ -136,4 +136,14 @@ class get_user_by_token(APIView):
                  'name':name},status=status.HTTP_200_OK)
         except Token.DoesNotExist:
             return Response({'error': 'Invalid token'}, status=400)
+        
+def get_message(request):
+    sender_id="pujitha"
+    receiver_id="arun1"
+    message=Message()
+    messages=message.get_messages(sender_id,receiver_id)
+
+    print(messages)
+    return HttpResponse("hello")
+
 

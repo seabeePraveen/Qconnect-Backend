@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.base_user import BaseUserManager
+from django.shortcuts import get_object_or_404
 
 class CustomUserManager(BaseUserManager):
     def create_user(self,email,username,password,**extra_fields):
@@ -54,3 +55,18 @@ class User(AbstractUser):
 
     def has_module_perms(self, add_label):
         return True
+    
+class Message(models.Model):
+    sender=models.ForeignKey(User,on_delete=models.CASCADE,related_name='sent_messages')
+    receiver=models.ForeignKey(User,on_delete=models.CASCADE,related_name='receiver_messages')
+    content=models.TextField()
+    time=models.DateTimeField(auto_now_add=True)
+    is_read=models.BooleanField(default=False)
+    def __str__(self):
+        return f"{self.sender.username} to {self.receiver.username}: {self.content}"
+    
+    def get_messages(self,sender_id,receiver_id):
+        sender=get_object_or_404(User,username=sender_id)
+        receiver=get_object_or_404(User,username=receiver_id)
+        messages=Message.objects.filter(sender=sender,receiver=receiver).order_by('time')
+        return messages

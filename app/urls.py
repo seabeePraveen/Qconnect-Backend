@@ -7,7 +7,7 @@ from . import views
 urlpatterns = [
     path("",views.home,name="home"),
     path('register/',SignUpView.as_view()),
-    path("update/",UserUpdateView.as_view(),name="for-update"),
-    path('get_token/',obtain_auth_token),
-    path("delete/",UserDeleteView.as_view(),name="for-delete"),
+    path("update/",UserUpdateView.as_view(),name="update_user"),
+    path("delete/",UserDeleteView.as_view(),name="delete_user"),
+    path("get_user/",get_user_by_token.as_view(),name="get_user"),
 ]

@@ -165,8 +165,8 @@ class get_users_by_starting_string(generics.GenericAPIView):
         data = request.data
         string = data['username']
         users = User.objects.filter(username__startswith=string)
-        users_serializer = UserSerializer(data=users,many=True)
+        users_serializer = UserSerializer(users,many=True)
 
-        if users_serializer.is_valid():
-            return Response(data={"message":"details getting"},status=status.HTTP_200_OK)
-        return Response(data={"mssg":"error"},status=status.HTTP_400_BAD_REQUEST)
+        return Response(users_serializer.data, status=status.HTTP_200_OK)
+        
+        return Response(data={"message": "Error"}, status=status.HTTP_400_BAD_REQUEST)

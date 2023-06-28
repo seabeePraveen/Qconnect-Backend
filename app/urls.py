@@ -3,6 +3,9 @@ from .views import *
 from rest_framework.authtoken.views import obtain_auth_token
 from .views import *
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path("",views.home,name="home"),
@@ -14,3 +17,4 @@ urlpatterns = [
     path("get_user/",get_user_by_token.as_view(),name="get_user"),
     path("get_user_with_string/",get_users_by_starting_string.as_view(),name='get_user_with_string'),
 ]
+urlpatterns +=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

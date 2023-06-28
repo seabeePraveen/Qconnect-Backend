@@ -36,6 +36,7 @@ class CustomUserManager(BaseUserManager):
 class User(AbstractUser):
     username = models.CharField(max_length=100,unique=True)
     email=models.EmailField(unique=True)
+    profile_pic = models.ImageField(upload_to='media/images/', default='app/images/default_img.png')
     name = models.CharField(max_length=100,null=True,blank=True)
     phone_number=models.CharField(max_length=12,null=True,blank=True)
     objects = CustomUserManager()

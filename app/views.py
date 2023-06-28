@@ -147,15 +147,8 @@ class get_user_by_token(APIView):
         #get the details of user using token
             token = Token.objects.get(key=token)
             user = token.user
-            username = user.username
-            email = user.email
-            phone_number = user.phone_number
-            name = user.name
-            return Response(
-                {'username': username,
-                 'email': email,
-                 'phone_number':phone_number,
-                 'name':name},status=status.HTTP_200_OK)
+            serializer = UserSerializer(user)
+            return Response(serializer.data,status=status.HTTP_200_OK)
         except Token.DoesNotExist:
             return Response({'error': 'Invalid token'}, status=400)
 

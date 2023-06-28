@@ -13,6 +13,8 @@ from rest_framework.authtoken.models import Token
 from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
+
 
 
 
@@ -147,8 +149,15 @@ class get_user_by_token(APIView):
         #get the details of user using token
             token = Token.objects.get(key=token)
             user = token.user
-            serializer = UserSerializer(user)
-            return Response(serializer.data,status=status.HTTP_200_OK)
+            username = user.username
+            email = user.email
+            phone_number = user.phone_number
+            name = user.name
+            return Response(
+                {'username': username,
+                 'email': email,
+                 'phone_number':phone_number,
+                 'name':name},status=status.HTTP_200_OK)
         except Token.DoesNotExist:
             return Response({'error': 'Invalid token'}, status=400)
 
@@ -163,3 +172,15 @@ class get_users_by_starting_string(generics.GenericAPIView):
         return Response(users_serializer.data, status=status.HTTP_200_OK)
         
         return Response(data={"message": "Error"}, status=status.HTTP_400_BAD_REQUEST)
+    
+def get_messages(request):
+    current_user = User.objects.get(username="arun")  # Assuming you have authentication in place
+    message = Message()
+    messages=message.get_messages(current_user)
+    print(messages)
+    l=[]
+    for i in messages:
+        if i is not None:
+            l.append(i)
+    print(l)
+    return render(request, 'messages.html', {'messages': l})    

@@ -58,16 +58,46 @@ class User(AbstractUser):
         return True
 
 class Message(models.Model):
+    user=models.ForeignKey(User,on_delete=models.CASCADE)
     sender=models.ForeignKey(User,on_delete=models.CASCADE,related_name='sent_messages')
     receiver=models.ForeignKey(User,on_delete=models.CASCADE,related_name='receiver_messages')
     content=models.TextField()
     time=models.DateTimeField(auto_now_add=True)
     is_read=models.BooleanField(default=False)
     def __str__(self):
-        return f"{self.sender.username} to {self.receiver.username}: {self.content}"
+        return f"{self.user} : {self.sender.username} to {self.receiver.username}"
     
-    def get_messages(self,sender_id,receiver_id):
-        sender=get_object_or_404(User,username=sender_id)
-        receiver=get_object_or_404(User,username=receiver_id)
-        messages=Message.objects.filter(sender=sender,receiver=receiver).order_by('time')
-        return messages
+    def sending_message(self,sender,receiver,content):
+        sender_message=Message(
+            user=sender,
+            sender=sender,#Sender sent the first meaasge
+            receiver=receiver,
+            content=content,
+            is_read=True
+        )
+        sender_message.save()
+        receiver_message=Message(
+            user=receiver,
+            sender=sender,
+            receiver=receiver,
+            content=content,
+            is_read=True
+        )
+        receiver_message.save()
+        return sender_message
+    
+    def get_messages(self,user):
+        users = Message.objects.filter(user=user).values('sender', 'receiver').distinct()
+
+        last_messages = []
+        for user_info in users:
+            # Retrieve the last message for the current user and the specific user in the loop
+            last_message = Message.objects.filter(
+                Q(sender=user, receiver=user_info['sender']) | Q(sender=user_info['sender'], receiver=user)
+            ).order_by('-time').first()
+
+            last_messages.append(last_message)
+
+        return last_messages
+        
+

@@ -1,6 +1,6 @@
 import io
 from django.shortcuts import render
-from .serializers import SignUpSerializer,UserSerializer
+from .serializers import SignUpSerializer,UserSerializer,MessageSerializer
 from rest_framework import generics,status
 from rest_framework.request import Request
 from .models import User,Message
@@ -149,15 +149,9 @@ class get_user_by_token(APIView):
         #get the details of user using token
             token = Token.objects.get(key=token)
             user = token.user
-            username = user.username
-            email = user.email
-            phone_number = user.phone_number
-            name = user.name
+            ser = UserSerializer(user)
             return Response(
-                {'username': username,
-                 'email': email,
-                 'phone_number':phone_number,
-                 'name':name},status=status.HTTP_200_OK)
+                ser.data,status=status.HTTP_200_OK)
         except Token.DoesNotExist:
             return Response({'error': 'Invalid token'}, status=400)
 
@@ -173,14 +167,22 @@ class get_users_by_starting_string(generics.GenericAPIView):
         
         return Response(data={"message": "Error"}, status=status.HTTP_400_BAD_REQUEST)
     
-def get_messages(request):
-    current_user = User.objects.get(username="arun")  # Assuming you have authentication in place
-    message = Message()
-    messages=message.get_messages(current_user)
-    print(messages)
-    l=[]
-    for i in messages:
-        if i is not None:
-            l.append(i)
-    print(l)
-    return render(request, 'messages.html', {'messages': l})    
+class get_last_messages_of_user_and_details(generics.GenericAPIView):
+    def post(self,request):
+        data = request.data
+        token = Token.objects.get(key = data['token'])
+        current_user = User.objects.get(username=token.user.username)  # Assuming you have authentication in place
+        messages = Message.get_messages(self,user=current_user)
+        serializer = MessageSerializer(messages,many=True).data
+        for data in serializer:
+            if data['user'] == data['sender']:
+                user = User.objects.get(id = data['receiver'])
+                ser = UserSerializer(user).data
+                data['user2_pic'] = ser['profile_pic']
+                data['user2_username'] = user.username
+            else:
+                user = User.objects.get(id = data['sender'])
+                ser = UserSerializer(user).data
+                data['user2_pic'] = ser['profile_pic']
+                data['user2_username'] = user.username
+        return Response(serializer,status=status.HTTP_200_OK) 

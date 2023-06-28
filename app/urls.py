@@ -16,7 +16,7 @@ urlpatterns = [
     path("delete/",UserDeleteView.as_view(),name="delete_user"),
     path("get_user/",get_user_by_token.as_view(),name="get_user"),
     path("get_user_with_string/",get_users_by_starting_string.as_view(),name='get_user_with_string'),
-    path("get_messages",views.get_messages,name="mesages_of_user")
+    path("get_last_messages_of_user_and_details/",get_last_messages_of_user_and_details.as_view(),name="get_last_messages_of_user_and_details")
 
 ]
 urlpatterns +=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

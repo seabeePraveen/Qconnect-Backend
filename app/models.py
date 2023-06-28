@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.base_user import BaseUserManager
+from django.db.models import Q
 
 class CustomUserManager(BaseUserManager):
     def create_user(self,email,username,password,**extra_fields):
@@ -87,17 +88,17 @@ class Message(models.Model):
         return sender_message
     
     def get_messages(self,user):
-        users = Message.objects.filter(user=user).values('sender', 'receiver').distinct()
-
+        friends = User.objects.exclude(username=user)  # Retrieve all users except user 'A'
         last_messages = []
-        for user_info in users:
-            # Retrieve the last message for the current user and the specific user in the loop
-            last_message = Message.objects.filter(
-                Q(sender=user, receiver=user_info['sender']) | Q(sender=user_info['sender'], receiver=user)
-            ).order_by('-time').first()
-
-            last_messages.append(last_message)
-
-        return last_messages
         
+        for friend in friends:
+            friend_message = Message.objects.filter(
+                Q(sender=user, receiver=friend) | Q(sender=friend, receiver=user)
+            ).order_by('-time')[:1]
+            
+            if friend_message:
+                last_messages.append(friend_message[0])
+        
+        return last_messages
+            
 

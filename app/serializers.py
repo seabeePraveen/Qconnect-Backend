@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.validators import ValidationError
-from .models import User
+from .models import User,Message
 
 class SignUpSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
@@ -35,4 +35,10 @@ class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model=User
         fields=['email','username','name','profile_pic']
+
+class MessageSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Message
+        fields = ['user','sender','receiver','content','time','is_read']
 

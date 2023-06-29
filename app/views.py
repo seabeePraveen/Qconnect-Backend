@@ -186,3 +186,22 @@ class get_last_messages_of_user_and_details(generics.GenericAPIView):
                 data['user2_pic'] = ser['profile_pic']
                 data['user2_username'] = user.username
         return Response(serializer,status=status.HTTP_200_OK) 
+
+class GetMessagesUser1ToUser2(generics.GenericAPIView):
+    queryset = Message.objects.all()  # Specify the queryset
+
+    serializer_class = MessageSerializer
+    def post(self, request):
+        host_username = "arun"
+        user_username = "akshu"
+        host = User.objects.get(username=host_username)
+        user = User.objects.get(username=user_username)
+        message_instance = Message()  # Create an instance of the Message model
+        messages = message_instance.get_messages_of_user(host=host, user2=user)  # Call the method on the instance
+        serializer = MessageSerializer(messages, many=True).data
+        return Response(serializer, status=status.HTTP_200_OK)
+
+def get_messages(request):
+    return render(request,"delete.html")
+
+        

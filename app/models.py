@@ -100,5 +100,13 @@ class Message(models.Model):
                 last_messages.append(friend_message[0])
         
         return last_messages
+    
+    def get_messages_of_user(self,host,user2):
+        messages_sent=Message.objects.filter(user=host,sender=host,receiver=user2)
+        messages_received=Message.objects.filter(user=host,sender=user2,receiver=host)
+        all_messages=list(messages_received)+list(messages_sent)
+        all_messages=sorted(all_messages,key=lambda x: x.time)
+
+        return all_messages
             
 

@@ -87,13 +87,13 @@ class Message(models.Model):
         receiver_message.save()
         return sender_message
     
-    def get_messages(self,user):
-        friends = User.objects.exclude(username=user)  # Retrieve all users except user 'A'
+    def get_messages(self,host):
+        friends = User.objects.exclude(username=host)  # Retrieve all users except user 'A'
         last_messages = []
         
         for friend in friends:
-            friend_message = Message.objects.filter(
-                Q(sender=user, receiver=friend) | Q(sender=friend, receiver=user)
+            friend_message = Message.objects.filter(user=host).filter(
+                Q(sender=host, receiver=friend) | Q(sender=friend, receiver=host)
             ).order_by('-time')[:1]
             
             if friend_message:

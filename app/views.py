@@ -172,7 +172,7 @@ class get_last_messages_of_user_and_details(generics.GenericAPIView):
         data = request.data
         token = Token.objects.get(key = data['token'])
         current_user = User.objects.get(username=token.user.username)  # Assuming you have authentication in place
-        messages = Message.get_messages(self,user=current_user)
+        messages = Message.get_messages(self,host=current_user)
         serializer = MessageSerializer(messages,many=True).data
         for data in serializer:
             if data['user'] == data['sender']:
@@ -199,8 +199,6 @@ class GetMessagesUser1ToUser2(generics.GenericAPIView):
         message_instance = Message()  # Create an instance of the Message model
         messages = message_instance.get_messages_of_user(host=host, user2=user)  # Call the method on the instance
         serializer = MessageSerializer(messages, many=True).data
-        for data in serializer:
-            print(data['content'])
         return Response(serializer, status=status.HTTP_200_OK)
 
 def get_messages(request):

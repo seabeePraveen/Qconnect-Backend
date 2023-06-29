@@ -204,4 +204,21 @@ class GetMessagesUser1ToUser2(generics.GenericAPIView):
 def get_messages(request):
     return render(request,"delete.html")
 
+class SendingMessages(generics.GenericAPIView):
+    queryset = Message.objects.all()  # Specify the queryset
+    serializer_class = MessageSerializer
+    def post(self,request):
+        host="akshu"
+        user2="arun"
+        host = User.objects.get(username=host)
+        user2 = User.objects.get(username=user2)
+        content=request.data['content']
+        message_instance=Message()
+        messages=message_instance.sending_message(sender=host,receiver=user2,content=content)
+        serializer=MessageSerializer(messages).data
+        return Response({'messages': serializer}, status=status.HTTP_200_OK)
+
+
+
+
         

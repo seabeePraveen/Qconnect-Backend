@@ -192,13 +192,15 @@ class GetMessagesUser1ToUser2(generics.GenericAPIView):
 
     serializer_class = MessageSerializer
     def post(self, request):
-        host_username = "arun"
-        user_username = "akshu"
+        host_username = request.data['host']
+        user_username = request.data['user2']
         host = User.objects.get(username=host_username)
         user = User.objects.get(username=user_username)
         message_instance = Message()  # Create an instance of the Message model
         messages = message_instance.get_messages_of_user(host=host, user2=user)  # Call the method on the instance
         serializer = MessageSerializer(messages, many=True).data
+        for data in serializer:
+            print(data['content'])
         return Response(serializer, status=status.HTTP_200_OK)
 
 def get_messages(request):
@@ -208,8 +210,9 @@ class SendingMessages(generics.GenericAPIView):
     queryset = Message.objects.all()  # Specify the queryset
     serializer_class = MessageSerializer
     def post(self,request):
-        host="akshu"
-        user2="arun"
+        print(request.user)
+        host=request.data['host']
+        user2=request.data['user2']
         host = User.objects.get(username=host)
         user2 = User.objects.get(username=user2)
         content=request.data['content']

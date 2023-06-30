@@ -98,6 +98,7 @@ class Message(models.Model):
             
             if friend_message:
                 last_messages.append(friend_message[0])
+        last_messages.sort(key=lambda x:x.time,reverse=True)
         
         return last_messages
     

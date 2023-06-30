@@ -82,7 +82,7 @@ class Message(models.Model):
             sender=sender,
             receiver=receiver,
             content=content,
-            is_read=False
+            is_read=True
         )
         receiver_message.save()
         return sender_message
@@ -98,15 +98,12 @@ class Message(models.Model):
             
             if friend_message:
                 last_messages.append(friend_message[0])
-        last_messages.sort(key=lambda x:x.time,reverse=True)
         
         return last_messages
     
     def get_messages_of_user(self,host,user2):
         messages_sent=Message.objects.filter(user=host,sender=host,receiver=user2)
         messages_received=Message.objects.filter(user=host,sender=user2,receiver=host)
-        for message in messages_received:
-            message.is_read=True
         all_messages=list(messages_received)+list(messages_sent)
         all_messages=sorted(all_messages,key=lambda x: x.time)
 

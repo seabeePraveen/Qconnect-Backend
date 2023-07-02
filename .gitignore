@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 
-media/images/
+
 
 chatapp/migrations/
 # Distribution / packaging

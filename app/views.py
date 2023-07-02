@@ -217,6 +217,25 @@ class SendingMessages(generics.GenericAPIView):
         messages=message_instance.sending_message(sender=host,receiver=user2,content=content)
         serializer=MessageSerializer(messages).data
         return Response({'messages': serializer}, status=status.HTTP_200_OK)
+    
+class ChangePassword(generics.GenericAPIView):
+    queryset=User.objects.all()
+    serializer_class=MessageSerializer
+    def post(self,request):
+        data = request.data
+        token = Token.objects.get(key = data['token'])
+        current_user = User.objects.get(username=token.user.username)  # Assuming you have authentication in place
+        old_password=data['oldPassword']
+        if current_user.password==old_password:
+            print(data['newPassword'])
+            current_user.password=data['newPassword']
+            current_user.save()
+        serializer = UserSerializer(current_user).data
+        
+       
+        return Response(serializer, status=status.HTTP_200_OK)
+
+
 
 
 

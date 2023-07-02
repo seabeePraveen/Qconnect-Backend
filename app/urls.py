@@ -19,7 +19,8 @@ urlpatterns = [
     path("get_last_messages_of_user_and_details/",get_last_messages_of_user_and_details.as_view(),name="get_last_messages_of_user_and_details"),
     path("get_messages/",views.get_messages,name="getting messages of user2"),
     path("get/",GetMessagesUser1ToUser2.as_view(),name="getting of host and user2"),
-    path("send/",SendingMessages.as_view(),name="sending messages")
+    path("send/",SendingMessages.as_view(),name="sending messages"),
+    path("change_password/",ChangePassword.as_view(),name="change password")
 
 ]
 urlpatterns +=static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

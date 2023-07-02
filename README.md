@@ -1,6 +1,6 @@
 # Qconnect API Backend Server
 <p align="center">
-<img src="static/Qconnect_logo.jpeg" height=60 width=60> </p>
+<img src="static/Qconnect_logo.jpeg" height=60 width=60>![](static/Qconnect_logo.jpeg) </p>
 
 <h2> This is a chat application backend server built using Django and Django REST Framework. It provides several endpoints to manipulate the data in the database and manage chat functionality.</h2>
 

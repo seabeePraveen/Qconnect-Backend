@@ -1,5 +1,4 @@
 # Qconnect API Backend Server
-![](static/Qconnect_logo.jpeg)
 <p align="center">
 <img src="static/Qconnect_logo.jpeg" height=60 width=60> </p>
 

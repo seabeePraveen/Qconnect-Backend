@@ -131,7 +131,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
+chatenv/
 # Spyder project settings
 .spyderproject
 .spyproject
@@ -164,3 +164,4 @@ cython_debug/
 #.idea/
 templates/
 app/migrations/
+app/media

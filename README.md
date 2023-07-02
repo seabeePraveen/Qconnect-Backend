@@ -59,9 +59,9 @@ The following API endpoints are available:
 
 - **POST** `/api/login/`: Obtain an access token for authentication (Token-based authentication)
 - **POST** `/api/register/`: User registration
-- **POST** `/api/update/`: Update user information with a 
-- **POST** `/api/delete/`: Delete a user 
-- **POST** `/api/get_user/`: Retrieve user information based on a token
+- **POST** `/api/update/`: Update current user information based on token
+- **POST** `/api/delete/`: Delete a current user 
+- **POST** `/api/get_user/`: Retrieve current user information based on token
 - **POST** `/api/get_user_with_string/`: Retrieve users by starting string (Useful for search functionality)
 - **POST** `/api/get_last_messages_of_user_and_details/`: Retrieve last messages of a user and their details
 - **POST** `/api/get/`: Get messages of user2 (Retrieve messages between current user and user2)

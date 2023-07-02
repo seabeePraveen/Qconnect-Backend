@@ -226,14 +226,18 @@ class ChangePassword(generics.GenericAPIView):
         token = Token.objects.get(key = data['token'])
         current_user = User.objects.get(username=token.user.username)  # Assuming you have authentication in place
         old_password=data['oldPassword']
-        if current_user.password==old_password:
+        if check_password(data['oldPassword'], current_user.password):
             print(data['newPassword'])
-            current_user.password=data['newPassword']
+            current_user.set_password(data['newPassword'])
             current_user.save()
-        serializer = UserSerializer(current_user).data
+            serializer = UserSerializer(current_user).data
+            return Response(serializer, status=status.HTTP_200_OK)
+        else:
+            return Response(data = {
+                "error":"Current Password is incorrect"
+            },status=status.HTTP_400_BAD_REQUEST)
         
        
-        return Response(serializer, status=status.HTTP_200_OK)
 
 
 

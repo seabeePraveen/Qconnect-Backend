@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -79,10 +80,8 @@ WSGI_APPLICATION = 'project.wsgi.application'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
+    
 }
 
 
@@ -124,6 +123,8 @@ STATIC_URL = '/media/'
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'media/'),
 ]
+STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles_build','static')
+MEDIA_URL ='static/'
 
 
 # Default primary key field type

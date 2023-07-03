@@ -14,12 +14,13 @@ from django.contrib.auth import login,logout,authenticate
 from django.contrib.auth.hashers import check_password
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
+from django.http import HttpResponse
 
 
 
 
 def home(request):
-    return render(request,"delete.html")
+    return HttpResponse("hello world")
 
 class LoginView(generics.GenericAPIView):
     def post(self,request:Request):
